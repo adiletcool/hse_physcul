@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:hse_phsycul/HexColor.dart';
 import 'package:hse_phsycul/constants.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 
 const String _markDownSrc = '''
 # __Ответы на часто задаваемые вопросы.__
@@ -55,11 +57,47 @@ class FaqMarkDown extends StatelessWidget {
               onPressed: () => Navigator.pushNamed(context, 'HomePage'),
             ),
           ),
-          body: Scrollbar(
-            child: Markdown(
-              data: _markDownSrc,
-              onTapLink: _onTapLink,
-              selectable: true,
+          body: DefaultTabController(
+            length: 2,
+            child: Column(
+              children: [
+                TabPageSelector(),
+                Expanded(
+                  child: TabBarView(
+                    children: [
+                      Markdown(
+                        data: _markDownSrc,
+                        onTapLink: _onTapLink,
+                        selectable: true,
+                      ),
+                      ListView.builder(
+                        itemCount: scheduleDocuments.length,
+                        itemBuilder: (context, index) {
+                          String docTitle = scheduleDocuments[index]['title'];
+                          String docDate = DateFormat("dd.MM.yyyy HH:mm").format(scheduleDocuments[index]['date']);
+                          String docUrl = scheduleDocuments[index]['url'];
+
+                          return ListTile(
+                            leading: Icon(MdiIcons.fileDocumentOutline, color: myDarkColor, size: 30),
+                            title: Text(
+                              docTitle,
+                              maxLines: 3,
+                              style: TextStyle(fontSize: 14, color: myDarkColor),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            subtitle: Text(docDate),
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => MyWebViewScaffold(docTitle, docUrl),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ),
         ),
@@ -67,3 +105,35 @@ class FaqMarkDown extends StatelessWidget {
     );
   }
 }
+
+/*
+Markdown(
+                  data: _markDownSrc,
+                  onTapLink: _onTapLink,
+                  selectable: true,
+                ),
+
+ListView.builder(
+                  itemCount: scheduleDocuments.length,
+                  itemBuilder: (context, index) {
+                    String docTitle = scheduleDocuments[index]['title'];
+                    String docDate = DateFormat("dd.MM.yyyy HH:mm").format(scheduleDocuments[index]['date']);
+                    String docUrl = scheduleDocuments[index]['url'];
+
+                    return ListTile(
+                      leading: Icon(MdiIcons.fileDocumentOutline, color: myDarkColor, size: 30),
+                      title: Text(
+                        docTitle,
+                        maxLines: 3,
+                        style: TextStyle(fontSize: 14, color: myDarkColor),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Text(docDate),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => MyWebViewScaffold(docTitle, docUrl),
+                        ),
+                      ),
+                    );
+                  },
+                ), */
