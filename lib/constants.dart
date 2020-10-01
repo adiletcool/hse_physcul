@@ -31,6 +31,25 @@ var scheduleDocuments = <Map<String, dynamic>>[
   },
 ];
 
+List<Map<String, String>> eduPrograms = [
+  {'value': 'ВВЕД', 'name': 'Востоковедение'},
+  {'value': 'ДИЗН', 'name': 'Дизайн'},
+  {'value': 'ИСТР', 'name': 'История'},
+  {'value': 'ЛУЦП', 'name': 'Логистика и УЦП'},
+  {'value': 'МБМН', 'name': 'Междунар. бизнес и менеджмент'},
+  {'value': 'МНДЖ', 'name': 'Менеджмент'},
+  {'value': 'ПИМП', 'name': 'Политология и мир. политика'},
+  {'value': 'ПМИН', 'name': 'Прикл. математика и информатика'},
+  {'value': 'ССИН', 'name': 'Социология и соц. информатика'},
+  {'value': 'УАГС', 'name': 'Упр. и аналитика в гос. секторе'},
+  {'value': 'ФИЗ', 'name': 'Физика'},
+  {'value': 'ФИЛЛ', 'name': 'Филология'},
+  {'value': 'ФИНН', 'name': 'Финансы'},
+  {'value': 'ЭКОН', 'name': 'Экономика'},
+  {'value': 'ЮРПР', 'name': 'Юриспруденция'},
+  {'value': 'ЮРПРо', 'name': 'Юриспруденция (о/з)'},
+];
+
 class MyWebViewScaffold extends StatelessWidget {
   final String appBarTitle;
   final String url;

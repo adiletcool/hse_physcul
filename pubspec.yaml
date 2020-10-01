@@ -30,8 +30,8 @@ dependencies:
   url_launcher: ^5.6.0
   flutter_markdown: ^0.4.4
   syncfusion_flutter_calendar: ^18.2.59
-  syncfusion_localizations: ^18.2.57
-
+  syncfusion_localizations: ^18.3.35
+  syncfusion_flutter_barcodes: ^18.3.35
   flutter:
     sdk: flutter
   flutter_localizations:
