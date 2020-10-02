@@ -8,6 +8,7 @@ import 'package:hse_phsycul/pages/faq.dart';
 import 'package:hse_phsycul/pages/qr_code_beta_page.dart';
 import 'package:hse_phsycul/pages/qr_code_page.dart';
 import 'package:hse_phsycul/pages/schedule.dart';
+import 'package:hse_phsycul/pages/settings.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'HexColor.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
         'QRCodeBetaPage': (context) => QRCodeBetaPage(),
         'SchedulePage': (context) => MyScheduleClass(),
         'FaqPage': (context) => FaqMarkDown(),
+        'SettingsPage': (context) => SettingsPage(),
       },
       localizationsDelegates: [GlobalMaterialLocalizations.delegate, SfGlobalLocalizations.delegate],
       supportedLocales: [const Locale('ru')],
@@ -64,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
             slivers: <Widget>[
               MySliverAppBar(_scaffoldKey),
               SliverFillRemaining(
-                child: Container(height: 1200),
+                child: Container(height: MediaQuery.of(context).size.height - 80),
                 hasScrollBody: false,
               ),
             ],
@@ -77,7 +79,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
 class MySliverAppBar extends StatelessWidget {
   const MySliverAppBar(this._scaffoldKey);
-
   final GlobalKey<ScaffoldState> _scaffoldKey;
 
   @override
@@ -151,7 +152,6 @@ class HomeDrawer extends StatelessWidget {
           title: Text('Hike', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
           leading: Icon(MdiIcons.hiking, color: myDarkColor, size: 24),
           onTap: () {
-            //TODO: hike
             Navigator.pop(context);
             Fluttertoast.showToast(msg: 'Not implemented yet');
           },
@@ -160,7 +160,7 @@ class HomeDrawer extends StatelessWidget {
         ListTile(
           title: Text('Settings', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
           leading: SvgPicture.asset('assets/settings.svg', width: 24, color: myDarkColor),
-          onTap: () {},
+          onTap: () => Navigator.pushNamed(context, 'SettingsPage'),
         ),
         ListTile(
           title: Text('FAQ', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),

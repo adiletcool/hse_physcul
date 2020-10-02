@@ -5,9 +5,11 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 import 'package:async/async.dart';
-
+import 'package:collection/collection.dart';
 import '../HexColor.dart';
 import '../constants.dart';
+
+Function areListsEqual = const ListEquality().equals;
 
 class QRCodeBetaPage extends StatefulWidget {
   QRCodeBetaPage({Key key}) : super(key: key);
@@ -24,30 +26,47 @@ class _QRCodeBetaPageState extends State<QRCodeBetaPage> {
   TextEditingController _groupNumController = TextEditingController();
   String _programmeName;
   String _qrCodeValue;
+  SharedPreferences _prefs;
 
   Future<bool> asyncinit() async {
-    await _memoizer.runOnce(() async => await getSettings());
+    await _memoizer.runOnce(() async {
+      _prefs = await SharedPreferences.getInstance();
+      await getSettings();
+    });
     return true;
   }
 
+  List readSettings() {
+    return [
+      _prefs.getString('_nameControllerText') ?? '',
+      _prefs.getString('_surnameControllerText') ?? '',
+      _prefs.getString('_groupNumControllerText') ?? '',
+      _prefs.getString('_programmeName') ?? null,
+    ];
+  }
+
   Future<void> getSettings() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    _nameController.text = prefs.getString('_nameControllerText') ?? '';
-    _surnameController.text = prefs.getString('_surnameControllerText') ?? '';
-    _groupNumController.text = prefs.getString('_groupNumControllerText') ?? '';
-    _programmeName = prefs.getString('_programmeName') ?? null;
+    List settings = readSettings();
+    _nameController.text = settings[0];
+    _surnameController.text = settings[1];
+    _groupNumController.text = settings[2];
+    _programmeName = settings[3];
     _saveQRCodeValue();
-    setState(() {});
+  }
+
+  void _saveQRCodeValue({programme}) {
+    _programmeName = programme ?? _programmeName;
+    setState(() => _qrCodeValue = "${_surnameController.text} ${_nameController.text};$_programmeName${_groupNumController.text}");
   }
 
   Future<void> saveSettings() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('_nameControllerText', _nameController.text);
-    await prefs.setString('_surnameControllerText', _surnameController.text);
-    await prefs.setString('_groupNumControllerText', _groupNumController.text);
-    await prefs.setString('_programmeName', _programmeName);
-
-    Fluttertoast.showToast(msg: 'Saved');
+    if (!areListsEqual(readSettings(), [_nameController.text, _surnameController.text, _groupNumController.text, _programmeName])) {
+      await _prefs.setString('_nameControllerText', _nameController.text);
+      await _prefs.setString('_surnameControllerText', _surnameController.text);
+      await _prefs.setString('_groupNumControllerText', _groupNumController.text);
+      await _prefs.setString('_programmeName', _programmeName);
+      Fluttertoast.showToast(msg: 'Saved');
+    }
   }
 
   @override
@@ -193,11 +212,6 @@ class _QRCodeBetaPageState extends State<QRCodeBetaPage> {
         ),
       ),
     );
-  }
-
-  void _saveQRCodeValue({programme}) {
-    _programmeName = programme ?? _programmeName;
-    setState(() => _qrCodeValue = "${_surnameController.text} ${_nameController.text};$_programmeName${_groupNumController.text}");
   }
 
   void clearButtonAction() {

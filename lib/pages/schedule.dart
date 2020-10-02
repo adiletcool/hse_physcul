@@ -52,7 +52,11 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
         floatingActionButton: FloatingActionButton(
           backgroundColor: HexColor.fromHex('#713045'),
           child: SvgPicture.asset('assets/geo.svg', color: HexColor.fromHex('#f5f7f9'), width: 25),
-          onPressed: () => showModalBottomSheet(context: context, builder: (context) => onlineClassBottomSheet()),
+          onPressed: () => showModalBottomSheet(
+            context: context,
+            builder: (context) => onlineClassBottomSheet(),
+            backgroundColor: Colors.transparent,
+          ),
         ),
         body: SafeArea(
           child: FutureBuilder<bool>(
@@ -67,15 +71,6 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
                     dataSource: events,
                     initialDisplayDate: DateTime(now.year, now.month, now.day, 8, 0),
                     initialSelectedDate: DateTime.now(),
-                    // if using CalendarView.week
-                    // timeSlotViewSettings: TimeSlotViewSettings(
-                    //   timeFormat: 'HH:mm',
-                    //   timeTextStyle: TextStyle(fontSize: 13, color: Colors.black),
-                    //   startHour: 8,
-                    //   endHour: 21,
-                    //   timeInterval: Duration(minutes: 30),
-                    //   timeIntervalHeight: 50,
-                    // ),
                     selectionDecoration: BoxDecoration(
                       border: Border.all(color: HexColor.fromHex('#713045'), width: 2),
                     ),
@@ -102,18 +97,72 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
     );
   }
 
+  Widget onlineClassBottomSheet() {
+    return Container(
+      decoration: BoxDecoration(
+        color: HexColor.fromHex('#f5f7f9'),
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              'Online class:',
+              style: TextStyle(color: myDarkColor, fontSize: 22, fontWeight: FontWeight.w600),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            SizedBox(height: 20),
+            DropdownButton(
+              underline: Container(),
+              isExpanded: true,
+              value: currentClass,
+              items: onlineClasses
+                  .map((String _class) => DropdownMenuItem(
+                        value: _class,
+                        child: Text(_class, overflow: TextOverflow.ellipsis, maxLines: 3),
+                      ))
+                  .toList(),
+              onChanged: (value) async {
+                if (value != currentClass) {
+                  await saveCurrentClass(value);
+                  currentClass = value;
+                  events = DataSource(getAppointments());
+                  setState(() {});
+                }
+                Navigator.of(context).pop();
+              },
+            ),
+            SizedBox(height: 20),
+          ],
+        ),
+      ),
+    );
+  }
+
   void openSubjectInfo(CalendarTapDetails details) {
     List<dynamic> res = details.appointments;
     if (res != null && res.length == 1) {
       String notesEncoded = res[0].notes;
       var notesDecoded = json.decode(notesEncoded);
-      showModalBottomSheet(context: context, builder: (context) => subjectBottomSheet(notesDecoded));
+      showModalBottomSheet(
+        context: context,
+        builder: (context) => subjectBottomSheet(notesDecoded),
+        backgroundColor: Colors.transparent,
+      );
     }
   }
 
   Widget subjectBottomSheet(notesDecoded) {
     print(notesDecoded);
     return Container(
+      decoration: BoxDecoration(
+        color: HexColor.fromHex('#f5f7f9'),
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+      ),
       padding: EdgeInsets.symmetric(horizontal: 7, vertical: 10),
       child: SingleChildScrollView(
         child: Column(
@@ -183,47 +232,6 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
       );
     });
     return result;
-  }
-
-  Widget onlineClassBottomSheet() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Online class:',
-              style: TextStyle(color: myDarkColor, fontSize: 22, fontWeight: FontWeight.w600),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            SizedBox(height: 20),
-            DropdownButton(
-              underline: Container(),
-              isExpanded: true,
-              value: currentClass,
-              items: onlineClasses
-                  .map((String _class) => DropdownMenuItem(
-                        value: _class,
-                        child: Text(_class, overflow: TextOverflow.ellipsis, maxLines: 3),
-                        onTap: () async {
-                          if (_class != currentClass) {
-                            await saveCurrentClass(_class);
-                            Navigator.pushNamed(context, 'SchedulePage');
-                          } else
-                            Navigator.pop(context);
-                        },
-                      ))
-                  .toList(),
-              onChanged: (value) => null, // because we reopen this page
-            ),
-            SizedBox(height: 20),
-          ],
-        ),
-      ),
-    );
   }
 }
 
