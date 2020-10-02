@@ -32,6 +32,7 @@ dependencies:
   syncfusion_flutter_calendar: ^18.2.59
   syncfusion_localizations: ^18.3.35
   syncfusion_flutter_barcodes: ^18.3.35
+  theme_provider: ^0.4.0+1
   flutter:
     sdk: flutter
   flutter_localizations:

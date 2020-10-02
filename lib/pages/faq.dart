@@ -51,7 +51,6 @@ class FaqMarkDown extends StatelessWidget {
         child: Scaffold(
           appBar: AppBar(
             title: Text('FAQ'),
-            backgroundColor: myDarkColor,
             leading: IconButton(
               icon: Icon(Icons.arrow_back_ios, color: HexColor.fromHex('#f5f7f9')),
               onPressed: () => Navigator.pushNamed(context, 'HomePage'),
@@ -78,11 +77,11 @@ class FaqMarkDown extends StatelessWidget {
                           String docUrl = scheduleDocuments[index]['url'];
 
                           return ListTile(
-                            leading: Icon(MdiIcons.fileDocumentOutline, color: myDarkColor, size: 30),
+                            leading: Icon(MdiIcons.fileDocumentOutline, color: Theme.of(context).iconTheme.color, size: 30),
                             title: Text(
                               docTitle,
                               maxLines: 3,
-                              style: TextStyle(fontSize: 14, color: myDarkColor),
+                              style: TextStyle(fontSize: 14),
                               overflow: TextOverflow.ellipsis,
                             ),
                             subtitle: Text(docDate),

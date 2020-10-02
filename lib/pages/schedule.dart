@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hse_phsycul/HexColor.dart';
-import 'package:hse_phsycul/constants.dart';
 import 'package:hse_phsycul/pages/shcedule_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -50,7 +49,7 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
       },
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          backgroundColor: HexColor.fromHex('#713045'),
+          backgroundColor: Theme.of(context).appBarTheme.color,
           child: SvgPicture.asset('assets/geo.svg', color: HexColor.fromHex('#f5f7f9'), width: 25),
           onPressed: () => showModalBottomSheet(
             context: context,
@@ -72,7 +71,7 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
                     initialDisplayDate: DateTime(now.year, now.month, now.day, 8, 0),
                     initialSelectedDate: DateTime.now(),
                     selectionDecoration: BoxDecoration(
-                      border: Border.all(color: HexColor.fromHex('#713045'), width: 2),
+                      border: Border.all(color: Theme.of(context).accentColor, width: 2),
                     ),
                     appointmentTimeTextFormat: 'HH:mm',
                     monthViewSettings: MonthViewSettings(
@@ -80,12 +79,11 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
                       numberOfWeeksInView: 3,
                       agendaViewHeight: MediaQuery.of(context).size.height / 1.7,
                     ),
-                    todayHighlightColor: myDarkColor,
                     headerStyle: CalendarHeaderStyle(textAlign: TextAlign.end),
                     onTap: (CalendarTapDetails details) => openSubjectInfo(details),
                   ),
                   IconButton(
-                    icon: Icon(Icons.arrow_back_ios, color: myDarkColor),
+                    icon: Icon(Icons.arrow_back_ios),
                     onPressed: () => Navigator.pushNamed(context, 'HomePage'),
                   ),
                 ],
@@ -100,7 +98,7 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
   Widget onlineClassBottomSheet() {
     return Container(
       decoration: BoxDecoration(
-        color: HexColor.fromHex('#f5f7f9'),
+        color: Theme.of(context).backgroundColor,
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
       ),
       padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
@@ -111,7 +109,7 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
           children: [
             Text(
               'Online class:',
-              style: TextStyle(color: myDarkColor, fontSize: 22, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
@@ -160,7 +158,7 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
     print(notesDecoded);
     return Container(
       decoration: BoxDecoration(
-        color: HexColor.fromHex('#f5f7f9'),
+        color: Theme.of(context).backgroundColor,
         borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
       ),
       padding: EdgeInsets.symmetric(horizontal: 7, vertical: 10),
@@ -176,18 +174,18 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
               subtitle: Text(notesDecoded['date']),
             ),
             ListTile(
-              leading: Icon(Icons.person_pin, color: myDarkColor, size: 30),
+              leading: Icon(Icons.person_pin, color: Theme.of(context).iconTheme.color, size: 30),
               title: Text(notesDecoded['tutor'], style: TextStyle(fontSize: 18)),
             ),
             ListTile(
-              leading: Icon(Icons.schedule, color: myDarkColor),
+              leading: Icon(Icons.schedule, color: Theme.of(context).iconTheme.color),
               title: Text(
                 '${notesDecoded['timeStart']} - ${notesDecoded['timeEnd']}',
                 style: TextStyle(fontSize: 18),
               ),
             ),
             ListTile(
-              leading: SvgPicture.asset('assets/building.svg', width: 22),
+              leading: SvgPicture.asset('assets/building.svg', width: 22, color: Theme.of(context).iconTheme.color),
               title: Text(currentClass),
             ),
           ],
@@ -223,7 +221,7 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
       });
 
       return Appointment(
-        color: myDarkColor,
+        color: HexColor.fromHex('#2d767f'),
         startTime: timeStartDT,
         endTime: timeEndDT,
         subject: type,

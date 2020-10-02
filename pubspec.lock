@@ -397,6 +397,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.17"
+  theme_provider:
+    dependency: "direct main"
+    description:
+      name: theme_provider
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0+1"
   timezone:
     dependency: transitive
     description:

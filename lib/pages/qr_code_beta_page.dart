@@ -78,7 +78,7 @@ class _QRCodeBetaPageState extends State<QRCodeBetaPage> {
         },
         child: Scaffold(
           floatingActionButton: FloatingActionButton(
-            backgroundColor: myDarkColor,
+            backgroundColor: Theme.of(context).appBarTheme.color,
             child: SvgPicture.asset('assets/settings.svg', color: HexColor.fromHex('#f5f7f9'), width: 25),
             onPressed: () => showParamsBottomSheet(),
           ),
@@ -94,7 +94,7 @@ class _QRCodeBetaPageState extends State<QRCodeBetaPage> {
                       Positioned(
                         top: 10,
                         child: IconButton(
-                          icon: Icon(Icons.arrow_back_ios, color: myDarkColor, size: 30),
+                          icon: Icon(Icons.arrow_back_ios, size: 30),
                           onPressed: () => Navigator.pushNamed(context, 'HomePage'),
                         ),
                       ),
@@ -116,6 +116,7 @@ class _QRCodeBetaPageState extends State<QRCodeBetaPage> {
         height: 300,
         child: SfBarcodeGenerator(
           value: _qrCodeValue,
+          barColor: Theme.of(context).iconTheme.color,
           showValue: true,
           symbology: QRCode(
             codeVersion: QRCodeVersion.auto,
@@ -139,7 +140,7 @@ class _QRCodeBetaPageState extends State<QRCodeBetaPage> {
       duration: const Duration(milliseconds: 100),
       child: Container(
         decoration: BoxDecoration(
-          color: HexColor.fromHex('#f5f7f9'),
+          color: Theme.of(context).backgroundColor,
           borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
         ),
         padding: EdgeInsets.only(right: 15, left: 15, bottom: 15),
@@ -155,7 +156,7 @@ class _QRCodeBetaPageState extends State<QRCodeBetaPage> {
                   children: [
                     Text(
                       'Set parameters',
-                      style: TextStyle(color: myDarkColor, fontSize: 22, fontWeight: FontWeight.w600),
+                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -170,7 +171,10 @@ class _QRCodeBetaPageState extends State<QRCodeBetaPage> {
                 TextFormField(
                   controller: _nameController,
                   textCapitalization: TextCapitalization.sentences,
-                  decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Name'),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Name',
+                  ),
                   maxLines: 1,
                   onChanged: (value) => _saveQRCodeValue(),
                 ),

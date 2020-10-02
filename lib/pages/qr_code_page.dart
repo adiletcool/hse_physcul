@@ -39,18 +39,18 @@ class _QRCodePageState extends State<QRCodePage> {
               Row(
                 children: [
                   IconButton(
-                    icon: Icon(Icons.arrow_back_ios, color: myDarkColor, size: 30),
+                    icon: Icon(Icons.arrow_back_ios, size: 30),
                     onPressed: () => Navigator.pushNamed(context, 'HomePage'),
                   ),
                   Spacer(),
                   ButtonBar(
                     children: [
                       IconButton(
-                        icon: SvgPicture.asset('assets/camera.svg', width: 30, color: myDarkColor),
+                        icon: SvgPicture.asset('assets/camera.svg', width: 30, color: Theme.of(context).iconTheme.color),
                         onPressed: () async => await _pickImageFromCamera(),
                       ),
                       IconButton(
-                        icon: SvgPicture.asset('assets/album.svg', width: 30, color: myDarkColor),
+                        icon: SvgPicture.asset('assets/album.svg', width: 30, color: Theme.of(context).iconTheme.color),
                         onPressed: () async => await _pickImageFromGallery(),
                       ),
                     ],
@@ -67,21 +67,14 @@ class _QRCodePageState extends State<QRCodePage> {
                 child: Container(
                   width: 240,
                   decoration: BoxDecoration(
-                    border: Border.all(color: myDarkColor),
+                    border: Border.all(color: Theme.of(context).iconTheme.color),
                     borderRadius: BorderRadius.circular(35),
                   ),
                   child: ListTile(
-                    title: Text('Create new QR-code',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w500,
-                          color: myDarkColor,
-                        )),
-                    trailing: Icon(MdiIcons.qrcodePlus, color: myDarkColor),
+                    title: Text('Create new QR-code', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
+                    trailing: Icon(MdiIcons.qrcodePlus, color: Theme.of(context).iconTheme.color),
                     onTap: () {
-                      Fluttertoast.showToast(
-                        msg: 'Do not forget to take a screenshot.',
-                      );
+                      Fluttertoast.showToast(msg: 'Do not forget to take a screenshot.');
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (BuildContext context) => MyWebViewScaffold('Create QR-code', createQRCodeUrl),

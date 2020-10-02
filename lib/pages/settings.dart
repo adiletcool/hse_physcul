@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:hse_phsycul/constants.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:theme_provider/theme_provider.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -10,7 +11,7 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   final _languageList = ['English', 'Russian'];
-  final _themeList = ['Dark', 'Light', 'System'];
+  final _themeList = ['Light', 'Dark'];
   final _qrInputModeList = ['Numeric', 'AlphaNumeric', 'Binary'];
   final _qrErrorLevelList = ['High', 'Quartile', 'Medium', 'Low'];
 
@@ -30,36 +31,38 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _theme = ThemeProvider.themeOf(context).id.capitalize();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: myDarkColor,
         toolbarHeight: 50,
         title: Text("Settings"),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios, color: Colors.grey.shade200, size: 25),
+          icon: Icon(Icons.arrow_back_ios, size: 25),
           onPressed: () => Navigator.pushNamed(context, 'HomePage'),
         ),
       ),
       body: SafeArea(
         child: Container(
-          color: Colors.grey.shade200,
           child: ListView(
             children: <Widget>[
               // General
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-                child: Text('General', style: TextStyle(color: Colors.grey.shade700, fontSize: 17)),
+                child: Text('General', style: TextStyle(fontSize: 17)),
               ),
               Card(
-                color: Colors.white,
                 elevation: 4,
                 child: Column(
                   children: <Widget>[
                     ExpansionTile(
-                      leading: Icon(Icons.person, color: Colors.black.withOpacity(.6)),
+                      leading: Icon(Icons.person, color: Theme.of(context).iconTheme.color),
                       title: Text("Profile"),
-                      trailing: Icon(Icons.arrow_right),
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -67,7 +70,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             maxLines: 1,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(left: 20),
-                              icon: SvgPicture.asset('assets/email.svg', color: Colors.black.withOpacity(.6)),
+                              icon: SvgPicture.asset('assets/email.svg', color: Theme.of(context).iconTheme.color),
                               border: InputBorder.none,
                               hintText: 'Corporate email',
                             ),
@@ -76,9 +79,8 @@ class _SettingsPageState extends State<SettingsPage> {
                       ],
                     ),
                     ExpansionTile(
-                      leading: Icon(Icons.language, color: Colors.black.withOpacity(.6)),
+                      leading: Icon(Icons.language, color: Theme.of(context).iconTheme.color),
                       title: Text("Language"),
-                      trailing: Icon(Icons.arrow_right),
                       children: _languageList
                           .map((String value) => ListTile(
                                 title: Text(value),
@@ -92,17 +94,26 @@ class _SettingsPageState extends State<SettingsPage> {
                           .toList(),
                     ),
                     ExpansionTile(
-                      leading: SvgPicture.asset('assets/brightness_low.svg', width: 26, color: Colors.black.withOpacity(.6)),
+                      leading: SvgPicture.asset(
+                        _theme != 'Dark' ? 'assets/brightness_low.svg' : 'assets/brightness_high.svg',
+                        width: 28,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
                       title: Text("Theme"),
-                      trailing: Icon(Icons.arrow_right),
                       children: _themeList
                           .map((String value) => ListTile(
                                 title: Text(value),
-                                onTap: () => setState(() => _theme = value),
+                                onTap: () {
+                                  ThemeProvider.controllerOf(context).setTheme(value.toLowerCase());
+                                  setState(() => _theme = value);
+                                },
                                 leading: Radio(
                                   groupValue: _theme,
                                   value: value,
-                                  onChanged: (value) => setState(() => _theme = value),
+                                  onChanged: (String value) {
+                                    ThemeProvider.controllerOf(context).setTheme(value.toLowerCase());
+                                    setState(() => _theme = value);
+                                  },
                                 ),
                               ))
                           .toList(),
@@ -113,17 +124,15 @@ class _SettingsPageState extends State<SettingsPage> {
               // 'QR Code Generator'
               Padding(
                 padding: const EdgeInsets.all(16),
-                child: Text('QR Generator', style: TextStyle(color: Colors.grey.shade700, fontSize: 17)),
+                child: Text('QR Generator', style: TextStyle(fontSize: 17)),
               ),
               Card(
-                color: Colors.white,
                 elevation: 4,
                 child: Column(
                   children: <Widget>[
                     ExpansionTile(
-                      leading: SvgPicture.asset('assets/input_mode.svg', width: 26, color: Colors.black.withOpacity(.6)),
+                      leading: SvgPicture.asset('assets/input_mode.svg', width: 26, color: Theme.of(context).iconTheme.color),
                       title: Text("Input Mode"),
-                      trailing: Icon(Icons.arrow_right),
                       children: _qrInputModeList
                           .map((String value) => ListTile(
                                 title: Text(value),
@@ -137,9 +146,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           .toList(),
                     ),
                     ExpansionTile(
-                      leading: Icon(MdiIcons.qrcodeEdit, color: Colors.black.withOpacity(.6)),
+                      leading: Icon(MdiIcons.qrcodeEdit, color: Theme.of(context).iconTheme.color),
                       title: Text("Error level"),
-                      trailing: Icon(Icons.arrow_right),
                       children: _qrErrorLevelList
                           .map((String value) => ListTile(
                                 title: Text(value),
