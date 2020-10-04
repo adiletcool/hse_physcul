@@ -32,22 +32,22 @@ var scheduleDocuments = <Map<String, dynamic>>[
 ];
 
 List<Map<String, String>> eduPrograms = [
-  {'value': 'ВВЕД', 'name': 'Востоковедение'},
-  {'value': 'ДИЗН', 'name': 'Дизайн'},
-  {'value': 'ИСТР', 'name': 'История'},
-  {'value': 'ЛУЦП', 'name': 'Логистика и УЦП'},
-  {'value': 'МБМН', 'name': 'Междунар. бизнес и менеджмент'},
-  {'value': 'МНДЖ', 'name': 'Менеджмент'},
-  {'value': 'ПИМП', 'name': 'Политология и мир. политика'},
-  {'value': 'ПМИН', 'name': 'Прикл. математика и информатика'},
-  {'value': 'ССИН', 'name': 'Социология и соц. информатика'},
-  {'value': 'УАГС', 'name': 'Упр. и аналитика в гос. секторе'},
-  {'value': 'ФИЗ', 'name': 'Физика'},
-  {'value': 'ФИЛЛ', 'name': 'Филология'},
-  {'value': 'ФИНН', 'name': 'Финансы'},
-  {'value': 'ЭКОН', 'name': 'Экономика'},
-  {'value': 'ЮРПР', 'name': 'Юриспруденция'},
-  {'value': 'ЮРПРо', 'name': 'Юриспруденция (о/з)'},
+  {'value': 'ВВЕД', 'name': 'ddItem_asian_african_studies'},
+  {'value': 'ДИЗН', 'name': 'ddItem_design'},
+  {'value': 'ИСТР', 'name': 'ddItem_history'},
+  {'value': 'ЛУЦП', 'name': 'ddItem_logistics'},
+  {'value': 'МБМН', 'name': 'ddItem_int_bus_man'},
+  {'value': 'МНДЖ', 'name': 'ddItem_management'},
+  {'value': 'ПИМП', 'name': 'ddItem_polit_science'},
+  {'value': 'ПМИН', 'name': 'ddItem_math_comp_science'},
+  {'value': 'ССИН', 'name': 'ddItem_sociology'},
+  {'value': 'УАГС', 'name': 'ddItem_pub_policy_analytics'},
+  {'value': 'ФИЗ', 'name': 'ddItem_physics'},
+  {'value': 'ФИЛЛ', 'name': 'ddItem_philology'},
+  {'value': 'ФИНН', 'name': 'ddItem_finance'},
+  {'value': 'ЭКОН', 'name': 'ddItem_economics'},
+  {'value': 'ЮРПР', 'name': 'ddItem_law'},
+  {'value': 'ЮРПРо', 'name': 'ddItem_law_full_part_time'},
 ];
 
 class MyWebViewScaffold extends StatelessWidget {

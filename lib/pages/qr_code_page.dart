@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class QRCodePage extends StatefulWidget {
   QRCodePage({Key key}) : super(key: key);
@@ -46,11 +47,11 @@ class _QRCodePageState extends State<QRCodePage> {
                   ButtonBar(
                     children: [
                       IconButton(
-                        icon: SvgPicture.asset('assets/camera.svg', width: 30, color: Theme.of(context).iconTheme.color),
+                        icon: SvgPicture.asset('assets/icons/camera.svg', width: 30, color: Theme.of(context).iconTheme.color),
                         onPressed: () async => await _pickImageFromCamera(),
                       ),
                       IconButton(
-                        icon: SvgPicture.asset('assets/album.svg', width: 30, color: Theme.of(context).iconTheme.color),
+                        icon: SvgPicture.asset('assets/icons/album.svg', width: 30, color: Theme.of(context).iconTheme.color),
                         onPressed: () async => await _pickImageFromGallery(),
                       ),
                     ],
@@ -71,13 +72,13 @@ class _QRCodePageState extends State<QRCodePage> {
                     borderRadius: BorderRadius.circular(35),
                   ),
                   child: ListTile(
-                    title: Text('Create new QR-code', style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
+                    title: Text('create_new_qr_code'.tr(), style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500)),
                     trailing: Icon(MdiIcons.qrcodePlus, color: Theme.of(context).iconTheme.color),
                     onTap: () {
-                      Fluttertoast.showToast(msg: 'Do not forget to take a screenshot.');
+                      Fluttertoast.showToast(msg: 'take_a_screenshot'.tr());
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (BuildContext context) => MyWebViewScaffold('Create QR-code', createQRCodeUrl),
+                          builder: (BuildContext context) => MyWebViewScaffold('create_new_qr_code'.tr(), createQRCodeUrl),
                         ),
                       );
                     },
@@ -92,7 +93,7 @@ class _QRCodePageState extends State<QRCodePage> {
   }
 
   Widget getImageBody() {
-    return this._imageFile == null ? SvgPicture.asset('assets/image.svg') : Image.file(this._imageFile, fit: BoxFit.fitHeight);
+    return this._imageFile == null ? SvgPicture.asset('assets/images/image.svg') : Image.file(this._imageFile, fit: BoxFit.fitHeight);
   }
 
   Future<Null> _pickImageFromCamera() async {

@@ -8,11 +8,11 @@ String funcTraining = 'Functional training';
 
 // _ugriumovaNEN = 'Natalia Ugriumova' ...
 //TODO: add russian names of tutor and types
-final List<String> onlineClasses = <String>['Kantemirovskaya, 3А, room 172', 'Kanala Griboedova Embankment, 123,  room 100'];
+final List<String> onlineClasses = <String>['address_1', 'address_2'];
 
 Map<String, List<Map<String, dynamic>>> scheduleInfo = {
   // Kanta
-  onlineClasses[0]: [
+  'address_1': [
     // Monday
     {'weekday': 1, 'timeStart': '08:00', 'timeEnd': '09:20', 'tutor': 'Natalia Ugriumova', 'type': _therapeutic},
     {'weekday': 1, 'timeStart': '09:30', 'timeEnd': '10:50', 'tutor': 'Nadezhda  Guscina / Natalia Ugriumova', 'type': _yoga},
@@ -64,8 +64,8 @@ Map<String, List<Map<String, dynamic>>> scheduleInfo = {
     {'weekday': 6, 'timeStart': '16:20', 'timeEnd': '17:40', 'tutor': 'Fedor Kostov', 'type': funcTraining}
   ],
   // Griboedova
-  onlineClasses[1]: [
-    // TODO: add schedule
+  'address_2': [
+    // TODO: add Griboedova schedule
     // Monday
   ],
 };

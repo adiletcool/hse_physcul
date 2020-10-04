@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:intl/intl.dart';
 import 'package:async/async.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class MyScheduleClass extends StatefulWidget {
   @override
@@ -50,7 +51,7 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           backgroundColor: Theme.of(context).appBarTheme.color,
-          child: SvgPicture.asset('assets/geo.svg', color: HexColor.fromHex('#f5f7f9'), width: 25),
+          child: SvgPicture.asset('assets/icons/geo.svg', color: HexColor.fromHex('#f5f7f9'), width: 25),
           onPressed: () => showModalBottomSheet(
             context: context,
             builder: (context) => onlineClassBottomSheet(),
@@ -108,7 +109,7 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              'Online class:',
+              'online_class'.tr() + ':',
               style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -121,7 +122,7 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
               items: onlineClasses
                   .map((String _class) => DropdownMenuItem(
                         value: _class,
-                        child: Text(_class, overflow: TextOverflow.ellipsis, maxLines: 3),
+                        child: Text(_class.tr(), overflow: TextOverflow.ellipsis, maxLines: 3),
                       ))
                   .toList(),
               onChanged: (value) async {
@@ -185,7 +186,7 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
               ),
             ),
             ListTile(
-              leading: SvgPicture.asset('assets/building.svg', width: 22, color: Theme.of(context).iconTheme.color),
+              leading: SvgPicture.asset('assets/icons/building.svg', width: 22, color: Theme.of(context).iconTheme.color),
               title: Text(currentClass),
             ),
           ],

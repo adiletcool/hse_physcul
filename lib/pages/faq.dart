@@ -5,6 +5,7 @@ import 'package:hse_phsycul/constants.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:intl/intl.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 const String _markDownSrc = '''
 # __Ответы на часто задаваемые вопросы.__
@@ -50,7 +51,7 @@ class FaqMarkDown extends StatelessWidget {
       body: SafeArea(
         child: Scaffold(
           appBar: AppBar(
-            title: Text('FAQ'),
+            title: Text('faq'.tr()),
             leading: IconButton(
               icon: Icon(Icons.arrow_back_ios, color: HexColor.fromHex('#f5f7f9')),
               onPressed: () => Navigator.pushNamed(context, 'HomePage'),

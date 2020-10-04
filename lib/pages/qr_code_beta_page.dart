@@ -8,6 +8,7 @@ import 'package:async/async.dart';
 import 'package:collection/collection.dart';
 import '../HexColor.dart';
 import '../constants.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 Function areListsEqual = const ListEquality().equals;
 
@@ -65,7 +66,7 @@ class _QRCodeBetaPageState extends State<QRCodeBetaPage> {
       await _prefs.setString('_surnameControllerText', _surnameController.text);
       await _prefs.setString('_groupNumControllerText', _groupNumController.text);
       await _prefs.setString('_programmeName', _programmeName);
-      Fluttertoast.showToast(msg: 'Saved');
+      Fluttertoast.showToast(msg: 'saved'.tr());
     }
   }
 
@@ -79,7 +80,7 @@ class _QRCodeBetaPageState extends State<QRCodeBetaPage> {
         child: Scaffold(
           floatingActionButton: FloatingActionButton(
             backgroundColor: Theme.of(context).appBarTheme.color,
-            child: SvgPicture.asset('assets/settings.svg', color: HexColor.fromHex('#f5f7f9'), width: 25),
+            child: SvgPicture.asset('assets/icons/settings.svg', color: HexColor.fromHex('#f5f7f9'), width: 25),
             onPressed: () => showParamsBottomSheet(),
           ),
           body: SafeArea(
@@ -109,7 +110,7 @@ class _QRCodeBetaPageState extends State<QRCodeBetaPage> {
     if (_nameController.text == '' || _surnameController.text == '' || _groupNumController.text == '' || _programmeName == null)
       return GestureDetector(
         onTap: () => showParamsBottomSheet(),
-        child: SvgPicture.asset('assets/add_user.svg', width: MediaQuery.of(context).size.width - 50),
+        child: SvgPicture.asset('assets/images/add_user.svg', width: MediaQuery.of(context).size.width - 50),
       );
     else
       return Container(
@@ -135,83 +136,81 @@ class _QRCodeBetaPageState extends State<QRCodeBetaPage> {
   }
 
   Widget myBottomSheet() {
-    return AnimatedPadding(
-      padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      duration: const Duration(milliseconds: 100),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).backgroundColor,
-          borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-        ),
-        padding: EdgeInsets.only(right: 15, left: 15, bottom: 15),
-        child: StatefulBuilder(
-          builder: (context, setState) => SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Set parameters',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    IconButton(
-                      icon: Icon(MdiIcons.eraserVariant, color: HexColor.fromHex('#cb3b3b'), size: 30),
-                      // icon: SvgPicture.asset('assets/clear_circle.svg', width: 30, color: HexColor.fromHex('#85203b')),
-                      onPressed: () => clearButtonAction(),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 15),
-                TextFormField(
-                  controller: _nameController,
-                  textCapitalization: TextCapitalization.sentences,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Name',
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).backgroundColor,
+        borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+      ),
+      padding: EdgeInsets.only(
+        right: 15,
+        left: 15,
+        bottom: (MediaQuery.of(context).viewInsets.bottom == 0) ? 15 : MediaQuery.of(context).viewInsets.bottom + 5,
+      ),
+      child: StatefulBuilder(
+        builder: (context, setState) => SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'set_parameters'.tr(),
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.w600),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  maxLines: 1,
-                  onChanged: (value) => _saveQRCodeValue(),
-                ),
-                SizedBox(height: 15),
-                TextFormField(
-                  controller: _surnameController,
-                  textCapitalization: TextCapitalization.sentences,
-                  decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Surname'),
-                  maxLines: 1,
-                  onChanged: (value) => _saveQRCodeValue(),
-                ),
-                SizedBox(height: 15),
-                DropdownButton<String>(
-                  isExpanded: true,
-                  value: _programmeName,
-                  hint: Text('Programme'),
-                  items: eduPrograms
-                      .map(
-                        (Map program) => DropdownMenuItem<String>(
-                          child: Text(program['name']),
-                          value: program['value'],
-                        ),
-                      )
-                      .toList(),
-                  onChanged: (value) => setState(() => _saveQRCodeValue(programme: value)),
-                ),
-                SizedBox(height: 15),
-                TextFormField(
-                  // TODO: groupNum is also must be changed ('177C')
-                  controller: _groupNumController,
-                  textCapitalization: TextCapitalization.sentences,
-                  decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'Group number'),
-                  maxLines: 1,
-                  onChanged: (value) => _saveQRCodeValue(),
-                ),
-              ],
-            ),
+                  IconButton(
+                    tooltip: 'Clear all',
+                    icon: Icon(MdiIcons.eraserVariant, color: HexColor.fromHex('#cb3b3b'), size: 30),
+                    // icon: SvgPicture.asset('assets/icons/clear_circle.svg', width: 30, color: HexColor.fromHex('#85203b')),
+                    onPressed: () => clearButtonAction(),
+                  ),
+                ],
+              ),
+              SizedBox(height: 15),
+              TextFormField(
+                controller: _nameController,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'hint_name'.tr()),
+                maxLines: 1,
+                onChanged: (value) => _saveQRCodeValue(),
+              ),
+              SizedBox(height: 15),
+              TextFormField(
+                controller: _surnameController,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'hint_surname'.tr()),
+                maxLines: 1,
+                onChanged: (value) => _saveQRCodeValue(),
+              ),
+              SizedBox(height: 15),
+              DropdownButton<String>(
+                isExpanded: true,
+                value: _programmeName,
+                hint: Text('hint_programme'.tr()),
+                items: eduPrograms
+                    .map(
+                      (Map program) => DropdownMenuItem<String>(
+                        child: Text(tr(program['name'])),
+                        value: program['value'],
+                      ),
+                    )
+                    .toList(),
+                onChanged: (value) => setState(() => _saveQRCodeValue(programme: value)),
+              ),
+              SizedBox(height: 15),
+              TextFormField(
+                // TODO: groupNum is also must be changed ('177C')
+                controller: _groupNumController,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: InputDecoration(border: OutlineInputBorder(), labelText: 'hint_group_number'.tr()),
+                maxLines: 1,
+                onChanged: (value) => _saveQRCodeValue(),
+              ),
+            ],
           ),
         ),
       ),
