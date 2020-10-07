@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hse_phsycul/constants.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:theme_provider/theme_provider.dart';
 import 'package:easy_localization/easy_localization.dart';
 
@@ -11,6 +13,9 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final TextEditingController _corpEmailController = TextEditingController();
+  String _loadedCorpEmail;
+
   final _languageList = [
     {'title': 'English', 'value': 'en-US'},
     {'title': 'Русский', 'value': 'ru-RU'}
@@ -29,6 +34,11 @@ class _SettingsPageState extends State<SettingsPage> {
     super.initState();
     _qrInputMode = _qrInputModeList[0];
     _qrErrorLevel = _qrErrorLevelList[0];
+    _getEmail().then((value) {
+      _loadedCorpEmail = value ?? '';
+      if (value != null) _corpEmailController.text = _loadedCorpEmail;
+      setState(() {});
+    });
   }
 
   @override
@@ -41,6 +51,20 @@ class _SettingsPageState extends State<SettingsPage> {
   void changeLanguage(String langValue) {
     context.locale = Locale(langValue.split('-')[0], langValue.split('-')[1]);
     setState(() => _language = langValue);
+  }
+
+  Future<String> _getEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('corpEmail');
+  }
+
+  Future<void> _saveEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('corpEmail', _corpEmailController.text);
+    _loadedCorpEmail = _corpEmailController.text;
+    Fluttertoast.showToast(msg: 'saved'.tr());
+    FocusScope.of(context).unfocus();
+    setState(() {});
   }
 
   @override
@@ -74,6 +98,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           child: TextFormField(
+                            controller: _corpEmailController,
                             maxLines: 1,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.only(left: 20),
@@ -81,8 +106,15 @@ class _SettingsPageState extends State<SettingsPage> {
                               border: InputBorder.none,
                               hintText: 'corporate_email'.tr(),
                             ),
+                            onChanged: (value) => setState(() {}),
                           ),
                         ),
+                        _corpEmailController.text == _loadedCorpEmail
+                            ? Container()
+                            : FlatButton(
+                                child: Text('Save'),
+                                onPressed: () async => await _saveEmail(),
+                              ),
                       ],
                     ),
                     ExpansionTile(

@@ -50,7 +50,7 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
       },
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Theme.of(context).appBarTheme.color,
+          backgroundColor: Theme.of(context).appBarTheme.color.withRed(130),
           child: SvgPicture.asset('assets/icons/geo.svg', color: HexColor.fromHex('#f5f7f9'), width: 25),
           onPressed: () => showModalBottomSheet(
             context: context,
@@ -209,8 +209,8 @@ class _MyScheduleClassState extends State<MyScheduleClass> {
       var date = DateFormat("dd.MM.yyyy").format(now.add(Duration(days: weekdayDiff)));
       var timeStart = scheduleInfo[currentClass][index]['timeStart'];
       var timeEnd = scheduleInfo[currentClass][index]['timeEnd'];
-      var type = scheduleInfo[currentClass][index]['type'];
-      var tutor = scheduleInfo[currentClass][index]['tutor'];
+      var type = tr(scheduleInfo[currentClass][index]['type']);
+      var tutor = tr(scheduleInfo[currentClass][index]['tutor']);
       DateTime timeStartDT = DateFormat("dd.MM.yyyy HH:mm").parse('$date $timeStart');
       DateTime timeEndDT = DateFormat("dd.MM.yyyy HH:mm").parse('$date $timeEnd');
       String notesEnc = json.encode({

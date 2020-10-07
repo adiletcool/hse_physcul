@@ -75,3 +75,10 @@ extension StringExtension on String {
     return "${this[0].toUpperCase()}${this.substring(1)}";
   }
 }
+
+TextStyle homeDrawerTextStyle = TextStyle(fontSize: 17, fontWeight: FontWeight.w500);
+
+/* USED SHAREDPREFESENSES KEYS: _nameControllerText, _surnameControllerText, _groupNumControllerText, _programmeName,
+imagePath, currentClass, corpEmail
+
+*/

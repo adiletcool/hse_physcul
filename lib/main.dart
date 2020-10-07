@@ -11,6 +11,7 @@ import 'package:hse_phsycul/pages/schedule.dart';
 import 'package:hse_phsycul/pages/settings.dart';
 import 'package:hse_phsycul/themes.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:syncfusion_localizations/syncfusion_localizations.dart';
 import 'HexColor.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -72,6 +73,19 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  String corpEmail;
+
+  @override
+  void initState() {
+    super.initState();
+    _getEmail().then((value) => setState(() => corpEmail = value));
+  }
+
+  Future<String> _getEmail() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('corpEmail');
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -81,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
       },
       child: Scaffold(
         key: _scaffoldKey,
-        drawer: HomeDrawer(),
+        drawer: HomeDrawer(email: corpEmail),
         body: SafeArea(
           child: CustomScrollView(
             physics: BouncingScrollPhysics(),
@@ -90,10 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
               SliverFillRemaining(
                 child: Container(
                   height: MediaQuery.of(context).size.height - 80,
-                  child: IconButton(
-                    icon: Icon(Icons.adb),
-                    onPressed: () => print(context.localizationDelegates),
-                  ),
                 ),
                 hasScrollBody: false,
               ),
@@ -154,15 +164,23 @@ class _MySliverAppBarState extends State<MySliverAppBar> {
 }
 
 class HomeDrawer extends StatelessWidget {
+  final String email;
+
+  const HomeDrawer({this.email});
+
   @override
   Widget build(BuildContext context) {
     final drawerHeader = UserAccountsDrawerHeader(
       decoration: BoxDecoration(color: myDarkColor),
+      //TODO: Load name from email
       accountName: Text('Adilet', style: TextStyle(fontSize: 20), maxLines: 1, overflow: TextOverflow.ellipsis),
-      accountEmail: Text('amabiraev@edu.hse.ru'),
-      currentAccountPicture: CircleAvatar(
-        child: Icon(Icons.person, color: myDarkColor, size: 35),
-        backgroundColor: HexColor.fromHex('#f8f8f8'),
+      accountEmail: [null, ''].contains(this.email) ? null : Text(this.email),
+      currentAccountPicture: GestureDetector(
+        child: CircleAvatar(
+          child: Icon(Icons.person, color: myDarkColor, size: 35),
+          backgroundColor: HexColor.fromHex('#f8f8f8'),
+        ),
+        onTap: () => Navigator.pushNamed(context, 'SettingsPage'),
       ),
     );
 
@@ -170,17 +188,17 @@ class HomeDrawer extends StatelessWidget {
       children: <Widget>[
         drawerHeader,
         ListTile(
-          title: Text('qr_code'.tr(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          title: Text('qr_code'.tr(), style: homeDrawerTextStyle),
           leading: Icon(MdiIcons.qrcodeScan, size: 24, color: Theme.of(context).iconTheme.color),
           onTap: () => Navigator.pushNamed(context, 'QRCodePage'),
         ),
         ListTile(
-          title: Text('QR_code_beta'.tr(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          title: Text('QR_code_beta'.tr(), style: homeDrawerTextStyle),
           leading: Icon(MdiIcons.qrcodeScan, size: 24, color: Theme.of(context).iconTheme.color),
           onTap: () => Navigator.pushNamed(context, 'QRCodeBetaPage'),
         ),
         ListTile(
-          title: Text('journal'.tr(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          title: Text('journal'.tr(), style: homeDrawerTextStyle),
           leading: SvgPicture.asset('assets/icons/calendar_check.svg', width: 24, color: Theme.of(context).iconTheme.color),
           onTap: () => Navigator.of(context).push(
             MaterialPageRoute(
@@ -189,17 +207,17 @@ class HomeDrawer extends StatelessWidget {
           ),
         ),
         ListTile(
-          title: Text('schedule'.tr(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          title: Text('schedule'.tr(), style: homeDrawerTextStyle),
           leading: SvgPicture.asset('assets/icons/calendar_days.svg', width: 24, color: Theme.of(context).iconTheme.color),
           onTap: () => Navigator.pushNamed(context, 'SchedulePage'),
         ),
         ListTile(
-          title: Text('train_at_home'.tr(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          title: Text('train_at_home'.tr(), style: homeDrawerTextStyle),
           leading: SvgPicture.asset('assets/icons/home.svg', width: 24, color: Theme.of(context).iconTheme.color),
           onTap: () async => await launch(homeTrainingsUrl),
         ),
         ListTile(
-          title: Text('hike'.tr(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          title: Text('hike'.tr(), style: homeDrawerTextStyle),
           leading: Icon(MdiIcons.hiking, size: 24, color: Theme.of(context).iconTheme.color),
           onTap: () {
             Navigator.pop(context);
@@ -208,27 +226,27 @@ class HomeDrawer extends StatelessWidget {
         ),
         Divider(color: Theme.of(context).textTheme.caption.color),
         ListTile(
-          title: Text('settings'.tr(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          title: Text('settings'.tr(), style: homeDrawerTextStyle),
           leading: SvgPicture.asset('assets/icons/settings.svg', width: 24, color: Theme.of(context).iconTheme.color),
           onTap: () => Navigator.pushNamed(context, 'SettingsPage'),
         ),
         ListTile(
-          title: Text('faq'.tr(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
+          title: Text('faq'.tr(), style: homeDrawerTextStyle),
           leading: SvgPicture.asset('assets/icons/faq.svg', width: 24, color: Theme.of(context).iconTheme.color),
           onTap: () => Navigator.pushNamed(context, 'FaqPage'),
         ),
-        ListTile(
-          leading: SvgPicture.asset(
-            ThemeProvider.themeOf(context).id != 'dark' ? 'assets/icons/brightness_low.svg' : 'assets/icons/brightness_high.svg',
-            width: 28,
-            color: Theme.of(context).iconTheme.color,
-          ),
-          title: Text('dark_mode'.tr(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500)),
-          trailing: Switch(
-            value: ThemeProvider.themeOf(context).id == 'dark',
-            onChanged: (bool value) => ThemeProvider.controllerOf(context).nextTheme(),
-          ),
-        ),
+        // ListTile(
+        //   leading: SvgPicture.asset(
+        //     ThemeProvider.themeOf(context).id != 'dark' ? 'assets/icons/brightness_low.svg' : 'assets/icons/brightness_high.svg',
+        //     width: 28,
+        //     color: Theme.of(context).iconTheme.color,
+        //   ),
+        //   title: Text('dark_mode'.tr(), style: homeDrawerTextStyle),
+        //   trailing: Switch(
+        //     value: ThemeProvider.themeOf(context).id == 'dark',
+        //     onChanged: (bool value) => ThemeProvider.controllerOf(context).nextTheme(),
+        //   ),
+        // ),
       ],
     );
 
